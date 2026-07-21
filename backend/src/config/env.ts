@@ -2,12 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const requiredEnv = [
-  "PORT",
-  "MONGODB_URI",
-  "JWT_SECRET",
-  "CLIENT_URL",
-] as const;
+const requiredEnv = ["PORT", "MONGODB_URI", "JWT_SECRET", "CLIENT_URL"] as const;
 
 for (const key of requiredEnv) {
   if (!process.env[key]) {
