@@ -8,6 +8,8 @@ import healthRoutes from "./routes/health.routes.js";
 import { notFound } from "./middlewares/notFound.middleware.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
+import authRoutes from "./routes/auth.routes.js";
+
 const app = express();
 
 // Middlewares
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/health", healthRoutes);
 
 app.use(notFound);
