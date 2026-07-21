@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import request from "supertest";
 
 import app from "../../../src/app.js";
-import { User } from "../../../src/models/User.js";
+import { User } from "../../../src/models/User.model.js";
 
 describe("POST /api/auth/register", () => {
   const validPayload = {

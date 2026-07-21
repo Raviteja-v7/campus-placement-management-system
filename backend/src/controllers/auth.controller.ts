@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 
 import { register, login } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/User.js";
+import { User } from "../models/User.model.js";
 
 export const registerUser: RequestHandler = asyncHandler(
   async (req, res) => {

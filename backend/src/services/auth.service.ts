@@ -1,4 +1,4 @@
-import { User } from "../models/User.js";
+import { User } from "../models/User.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import type { RegisterInput } from "../validators/auth.validator.js";
 import type { LoginInput } from "../validators/auth.validator.js";
