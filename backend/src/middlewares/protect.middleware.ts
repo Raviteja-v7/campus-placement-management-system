@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
-import { User } from "../models/User.js";
+import { User } from "../models/User.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { verifyToken } from "../utils/jwt.js";

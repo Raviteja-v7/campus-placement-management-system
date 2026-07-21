@@ -1,4 +1,4 @@
-import { User } from "../models/User.js";
+import { User } from "../models/User.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import type { RegisterInput } from "../validators/auth.validator.js";
 import type { LoginInput } from "../validators/auth.validator.js";
@@ -8,14 +8,14 @@ export const register = async (payload: RegisterInput) => {
   const { username, email, password } = payload;
 
   const existingEmail = await User.findOne({ email });
-    if (existingEmail) {
+  if (existingEmail) {
     throw new ApiError(409, "Email is already registered");
-    }
+  }
 
-    const existingUsername = await User.findOne({ username });
-    if (existingUsername) {
+  const existingUsername = await User.findOne({ username });
+  if (existingUsername) {
     throw new ApiError(409, "Username is already taken");
-    }
+  }
 
   const user = await User.create({
     username,
