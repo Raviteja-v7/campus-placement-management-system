@@ -1,12 +1,24 @@
-import type { Request, Response, NextFunction } from "express";
+import type { ErrorRequestHandler } from "express";
+import { ValidationError } from "yup";
+
 import { ApiError } from "../utils/ApiError.js";
 
-export const errorHandler = (
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-): void => {
+export const errorHandler: ErrorRequestHandler = (
+  err: unknown,
+  _req,
+  res,
+  _next,
+) => {
+  if (err instanceof ValidationError) {
+    res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: err.errors,
+    });
+
+    return;
+  }
+
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({
       success: false,

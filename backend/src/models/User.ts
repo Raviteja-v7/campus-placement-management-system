@@ -18,7 +18,11 @@ export interface IUserMethods {
 
 export type UserDocument = HydratedDocument<IUser, IUserMethods>;
 
-export type UserModel = Model<IUser, {}, IUserMethods>;
+export type UserModel = Model<
+  IUser,
+  Record<string, never>,
+  IUserMethods
+>;
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
