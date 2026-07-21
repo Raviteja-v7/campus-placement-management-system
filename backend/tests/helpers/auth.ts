@@ -11,16 +11,12 @@ export const registerAndLoginUser = async () => {
   };
 
   // Ignore if user already existsa
-  await request(app)
-    .post("/api/auth/register")
-    .send(user);
+  await request(app).post("/api/auth/register").send(user);
 
-  const loginResponse = await request(app)
-    .post("/api/auth/login")
-    .send({
-      email: user.email,
-      password: user.password,
-    });
+  const loginResponse = await request(app).post("/api/auth/login").send({
+    email: user.email,
+    password: user.password,
+  });
 
   return {
     cookie: loginResponse.headers["set-cookie"],

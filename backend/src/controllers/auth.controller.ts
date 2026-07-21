@@ -4,18 +4,15 @@ import { register, login } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/User.model.js";
 
-export const registerUser: RequestHandler = asyncHandler(
-  async (req, res) => {
-    const user = await register(req.body);
+export const registerUser: RequestHandler = asyncHandler(async (req, res) => {
+  const user = await register(req.body);
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      data: user,
-    });
-  },
-);
-
+  res.status(201).json({
+    success: true,
+    message: "User registered successfully",
+    data: user,
+  });
+});
 
 export const loginUser: RequestHandler = asyncHandler(async (req, res) => {
   const { token, user } = await login(req.body);
@@ -44,13 +41,9 @@ export const getMe: RequestHandler = asyncHandler(async (req, res) => {
   });
 });
 
-
 export const logoutUser: RequestHandler = asyncHandler(async (_req, res) => {
-  res
-    .clearCookie("token")
-    .status(200)
-    .json({
-      success: true,
-      message: "Logged out successfully",
-    });
+  res.clearCookie("token").status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 });

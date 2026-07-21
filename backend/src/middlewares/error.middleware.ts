@@ -3,12 +3,7 @@ import { ValidationError } from "yup";
 
 import { ApiError } from "../utils/ApiError.js";
 
-export const errorHandler: ErrorRequestHandler = (
-  err: unknown,
-  _req,
-  res,
-  _next,
-) => {
+export const errorHandler: ErrorRequestHandler = (err: unknown, _req, res, _next) => {
   if (err instanceof ValidationError) {
     res.status(400).json({
       success: false,

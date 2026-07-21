@@ -9,9 +9,9 @@ const router = Router();
 
 router.post("/register", validate(registerSchema), registerUser);
 
-router.post("/login", validate(loginSchema), loginUser,);
+router.post("/login", validate(loginSchema), loginUser);
 
-router.get("/me", protect, getMe,);
+router.get("/me", protect, getMe);
 
 router.post("/logout", logoutUser);
 

@@ -29,18 +29,13 @@ describe("PATCH /api/profile", () => {
 
     expect(response.status).toBe(200);
     expect(response.body.data.cgpa).toBe(9.2);
-    expect(response.body.data.skills).toEqual([
-      "Node.js",
-      "React",
-    ]);
+    expect(response.body.data.skills).toEqual(["Node.js", "React"]);
   });
 
-it("should return 401 if user is not authenticated", async () => {
-    const response = await request(app)
-      .patch("/api/profile")
-      .send({
-        cgpa: 9.0,
-      });
+  it("should return 401 if user is not authenticated", async () => {
+    const response = await request(app).patch("/api/profile").send({
+      cgpa: 9.0,
+    });
 
     expect(response.status).toBe(401);
   });
@@ -48,12 +43,9 @@ it("should return 401 if user is not authenticated", async () => {
   it("should return 404 if profile does not exist", async () => {
     const { cookie } = await registerAndLoginUser();
 
-    const response = await request(app)
-      .patch("/api/profile")
-      .set("Cookie", cookie)
-      .send({
-        cgpa: 9.0,
-      });
+    const response = await request(app).patch("/api/profile").set("Cookie", cookie).send({
+      cgpa: 9.0,
+    });
 
     expect(response.status).toBe(404);
   });

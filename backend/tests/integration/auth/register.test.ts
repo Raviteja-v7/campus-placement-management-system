@@ -13,9 +13,7 @@ describe("POST /api/auth/register", () => {
 
   it("should create a new user", async () => {
     // Act
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send(validPayload);
+    const response = await request(app).post("/api/auth/register").send(validPayload);
 
     // Assert - HTTP
     expect(response.status).toBe(201);
@@ -40,57 +38,45 @@ describe("POST /api/auth/register", () => {
   });
 
   it("should reject duplicate email", async () => {
-    await request(app)
-      .post("/api/auth/register")
-      .send(validPayload);
+    await request(app).post("/api/auth/register").send(validPayload);
 
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send({
-        username: "another-user",
-        email: validPayload.email,
-        password: "Password123",
-      });
+    const response = await request(app).post("/api/auth/register").send({
+      username: "another-user",
+      email: validPayload.email,
+      password: "Password123",
+    });
 
     expect(response.status).toBe(409);
   });
 
   it("should reject duplicate username", async () => {
-    await request(app)
-      .post("/api/auth/register")
-      .send(validPayload);
+    await request(app).post("/api/auth/register").send(validPayload);
 
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send({
-        username: validPayload.username,
-        email: "another@example.com",
-        password: "Password123",
-      });
+    const response = await request(app).post("/api/auth/register").send({
+      username: validPayload.username,
+      email: "another@example.com",
+      password: "Password123",
+    });
 
     expect(response.status).toBe(409);
   });
 
   it("should reject invalid email", async () => {
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send({
-        username: "john",
-        email: "invalid-email",
-        password: "Password123",
-      });
+    const response = await request(app).post("/api/auth/register").send({
+      username: "john",
+      email: "invalid-email",
+      password: "Password123",
+    });
 
     expect(response.status).toBe(400);
   });
 
   it("should reject missing password", async () => {
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send({
-        username: "john",
-        email: "john@example.com",
-        password: "",
-      });
+    const response = await request(app).post("/api/auth/register").send({
+      username: "john",
+      email: "john@example.com",
+      password: "",
+    });
 
     expect(response.status).toBe(400);
   });

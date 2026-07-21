@@ -19,9 +19,7 @@ describe("GET /api/profile/me", () => {
         phone: "9999999999",
       });
 
-    const response = await request(app)
-      .get("/api/profile/me")
-      .set("Cookie", cookie);
+    const response = await request(app).get("/api/profile/me").set("Cookie", cookie);
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
@@ -37,9 +35,7 @@ describe("GET /api/profile/me", () => {
   it("should return 404 if profile does not exist", async () => {
     const { cookie } = await registerAndLoginUser();
 
-    const response = await request(app)
-      .get("/api/profile/me")
-      .set("Cookie", cookie);
+    const response = await request(app).get("/api/profile/me").set("Cookie", cookie);
 
     expect(response.status).toBe(404);
   });

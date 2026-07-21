@@ -1,14 +1,12 @@
 import { StudentProfile } from "../models/StudentProfile.model.js";
 import { ApiError } from "../utils/ApiError.js";
-import type { CreateProfileInput, UpdateProfileInput, } from "../validators/profile.validator.js";
+import type { CreateProfileInput, UpdateProfileInput } from "../validators/profile.validator.js";
 
 interface CreateProfileData extends CreateProfileInput {
   userId: string;
 }
 
-export const createProfile = async (
-  data: CreateProfileData,
-) => {
+export const createProfile = async (data: CreateProfileData) => {
   const existingProfile = await StudentProfile.exists({
     userId: data.userId,
   });
@@ -22,7 +20,6 @@ export const createProfile = async (
   return profile;
 };
 
-
 export const getProfileByUserId = async (userId: string) => {
   const profile = await StudentProfile.findOne({ userId });
 
@@ -33,19 +30,11 @@ export const getProfileByUserId = async (userId: string) => {
   return profile;
 };
 
-
-export const updateProfile = async (
-  userId: string,
-  updates: UpdateProfileInput,
-) => {
-  const profile = await StudentProfile.findOneAndUpdate(
-    { userId },
-    updates,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+export const updateProfile = async (userId: string, updates: UpdateProfileInput) => {
+  const profile = await StudentProfile.findOneAndUpdate({ userId }, updates, {
+    new: true,
+    runValidators: true,
+  });
 
   if (!profile) {
     throw new ApiError(404, "Profile not found");

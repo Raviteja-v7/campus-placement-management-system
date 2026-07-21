@@ -8,11 +8,7 @@ export const registerSchema = yup.object({
     .max(30, "Username cannot exceed 30 characters")
     .required("Username is required"),
 
-  email: yup
-    .string()
-    .trim()
-    .email("Invalid email address")
-    .required("Email is required"),
+  email: yup.string().trim().email("Invalid email address").required("Email is required"),
 
   password: yup
     .string()
@@ -21,17 +17,10 @@ export const registerSchema = yup.object({
 });
 
 export const loginSchema = yup.object({
-  email: yup
-    .string()
-    .trim()
-    .email("Invalid email")
-    .required("Email is required"),
+  email: yup.string().trim().email("Invalid email").required("Email is required"),
 
-  password: yup
-    .string()
-    .required("Password is required"),
+  password: yup.string().required("Password is required"),
 });
-
 
 export type RegisterInput = yup.InferType<typeof registerSchema>;
 export type LoginInput = yup.InferType<typeof loginSchema>;

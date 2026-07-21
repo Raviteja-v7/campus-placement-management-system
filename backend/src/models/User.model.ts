@@ -18,11 +18,7 @@ export interface IUserMethods {
 
 export type UserDocument = HydratedDocument<IUser, IUserMethods>;
 
-export type UserModel = Model<
-  IUser,
-  Record<string, never>,
-  IUserMethods
->;
+export type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
@@ -68,9 +64,7 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.comparePassword = async function (
-  candidatePassword: string,
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.password);
 };
 

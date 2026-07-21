@@ -56,7 +56,4 @@ const studentProfileSchema = new Schema(
 
 export type IStudentProfile = InferSchemaType<typeof studentProfileSchema>;
 
-export const StudentProfile = model<IStudentProfile>(
-  "StudentProfile",
-  studentProfileSchema,
-);
+export const StudentProfile = model<IStudentProfile>("StudentProfile", studentProfileSchema);
