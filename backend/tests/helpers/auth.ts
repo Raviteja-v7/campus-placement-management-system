@@ -1,22 +1,48 @@
 import request from "supertest";
-import app from "../../src/app.js";
+import { expect } from "vitest";
 import { faker } from "@faker-js/faker";
 
-export const registerAndLoginUser = async () => {
+import app from "../../src/app.js";
+import type { Role } from "../../src/constants/roles.js";
+import { User } from "../../src/models/User.model.js";
+
+type RegisterAndLoginOptions = {
+  role?: Role;
+};
+
+const DEFAULT_PASSWORD = "Password@123";
+
+export const registerAndLoginUser = async (
+  { role = "student" }: RegisterAndLoginOptions = {}
+) => {
   const user = {
     username: faker.internet.username(),
     email: faker.internet.email(),
-    password: "Password@123",
-    role: "student",
+    password: DEFAULT_PASSWORD,
+    role,
   };
 
-  // Ignore if user already existsa
-  await request(app).post("/api/auth/register").send(user);
+  const registerResponse = await request(app)
+  .post("/api/auth/register")
+  .send(user);
 
-  const loginResponse = await request(app).post("/api/auth/login").send({
+expect(registerResponse.status).toBe(201);
+
+// Promote to admin only in tests
+if (role === "admin") {
+  await User.findByIdAndUpdate(registerResponse.body.data.id, {
+    role: "admin",
+  });
+}
+
+const loginResponse = await request(app)
+  .post("/api/auth/login")
+  .send({
     email: user.email,
     password: user.password,
   });
+
+expect(loginResponse.status).toBe(200);
 
   return {
     cookie: loginResponse.headers["set-cookie"],

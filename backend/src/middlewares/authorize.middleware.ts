@@ -6,6 +6,9 @@ import type { Role } from "../constants/roles.js";
 export const authorize =
   (...roles: Role[]): RequestHandler =>
   (req, _res, next) => {
+    console.log("Allowed:", roles);
+    console.log("User:", req.user);
+
     if (!req.user) {
       throw new ApiError(401, "Authentication required");
     }
