@@ -12,19 +12,15 @@ describe("POST /api/auth/register", () => {
   };
 
   it("should create a new user", async () => {
-    // Act
     const response = await request(app).post("/api/auth/register").send(validPayload);
 
-    // Assert - HTTP
     expect(response.status).toBe(201);
 
-    // Assert - Response
     expect(response.body.success).toBe(true);
     expect(response.body.data.email).toBe(validPayload.email);
     expect(response.body.data.username).toBe(validPayload.username);
     expect(response.body.data.password).toBeUndefined();
 
-    // Assert - Database
     const user = await User.findOne({
       email: validPayload.email,
     }).select("+password");
@@ -33,7 +29,6 @@ describe("POST /api/auth/register", () => {
     expect(user?.email).toBe(validPayload.email);
     expect(user?.username).toBe(validPayload.username);
 
-    // Password should be hashed
     expect(user?.password).not.toBe(validPayload.password);
   });
 

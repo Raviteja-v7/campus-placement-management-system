@@ -10,6 +10,7 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
+import jobRoutes from "./routes/job.routes.js";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/jobs", jobRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
