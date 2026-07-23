@@ -4,12 +4,12 @@ import request from "supertest";
 import app from "../../../src/app.js";
 import { registerAndLoginUser } from "../../helpers/auth.js";
 
-describe("PATCH /api/profile", () => {
+describe("PATCH /api/profile/me", () => {
   it("should update the profile", async () => {
     const { cookie } = await registerAndLoginUser();
 
     await request(app)
-      .post("/api/profile")
+      .post("/api/profile/me")
       .set("Cookie", cookie)
       .send({
         department: "CSE",
@@ -20,7 +20,7 @@ describe("PATCH /api/profile", () => {
       });
 
     const response = await request(app)
-      .patch("/api/profile")
+      .patch("/api/profile/me")
       .set("Cookie", cookie)
       .send({
         cgpa: 9.2,
@@ -33,7 +33,7 @@ describe("PATCH /api/profile", () => {
   });
 
   it("should return 401 if user is not authenticated", async () => {
-    const response = await request(app).patch("/api/profile").send({
+    const response = await request(app).patch("/api/profile/me").send({
       cgpa: 9.0,
     });
 
@@ -43,7 +43,7 @@ describe("PATCH /api/profile", () => {
   it("should return 404 if profile does not exist", async () => {
     const { cookie } = await registerAndLoginUser();
 
-    const response = await request(app).patch("/api/profile").set("Cookie", cookie).send({
+    const response = await request(app).patch("/api/profile/me").set("Cookie", cookie).send({
       cgpa: 9.0,
     });
 

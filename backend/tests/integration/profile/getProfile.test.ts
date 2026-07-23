@@ -9,7 +9,7 @@ describe("GET /api/profile/me", () => {
     const { cookie } = await registerAndLoginUser();
 
     await request(app)
-      .post("/api/profile")
+      .post("/api/profile/me")
       .set("Cookie", cookie)
       .send({
         department: "CSE",
