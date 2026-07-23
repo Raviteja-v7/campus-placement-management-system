@@ -2,6 +2,7 @@ import { StudentProfile } from "../models/StudentProfile.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import type { CreateProfileInput, UpdateProfileInput } from "../validators/profile.validator.js";
 import { uploadToS3 } from "../utils/uploadToS3.js";
+import { attachSignedUrls } from "../utils/profile.helper.js";
 
 interface CreateProfileData extends CreateProfileInput {
   userId: string;
@@ -28,7 +29,7 @@ export const getProfileByUserId = async (userId: string) => {
     throw new ApiError(404, "Profile not found");
   }
 
-  return profile;
+  return await attachSignedUrls(profile);
 };
 
 export const updateProfile = async (userId: string, updates: UpdateProfileInput) => {
@@ -57,7 +58,7 @@ export const getProfileById = async (id: string) => {
     throw new ApiError(404, "Profile not found");
   }
 
-  return profile;
+  return await attachSignedUrls(profile);
 };
 
 export const uploadProfileImage = async (
@@ -76,7 +77,7 @@ export const uploadProfileImage = async (
 
   await profile.save();
 
-  return profile;
+  return await attachSignedUrls(profile);
 };
 
 
@@ -96,5 +97,5 @@ export const uploadResume = async (
 
   await profile.save();
 
-  return profile;
+  return await attachSignedUrls(profile);
 };
