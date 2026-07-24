@@ -5,15 +5,20 @@ import type {
   UpdateJobInput,
 } from "../validators/job.validator.js";
 import Application from "../models/Application.model.js";
+import jobIndexingService from "../ai/services/jobIndexing.service.js";
 
 export const createJob = async (
   data: CreateJobInput,
   createdBy: string
 ) => {
-  return await Job.create({
+  const job = await Job.create({
     ...data,
     createdBy,
   });
+
+  await jobIndexingService.indexJob(job);
+
+  return job;
 };
 
 export const getAllJobs = async () => {
@@ -43,6 +48,8 @@ export const updateJob = async (
     throw new ApiError(404, "Job not found");
   }
 
+  await jobIndexingService.indexJob(job);
+
   return job;
 };
 
@@ -53,6 +60,8 @@ export const deleteJob = async (id: string) => {
   if (!job) {
     throw new ApiError(404, "Job not found");
   }
+
+  await jobIndexingService.deleteJob(id);
 
   return;
 };

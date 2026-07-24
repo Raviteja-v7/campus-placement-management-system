@@ -6,6 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomUUID } from "crypto";
 
 import s3 from "../config/s3.js";
+import type { Readable } from "stream";
 
 export const uploadToS3 = async (
   file: Express.Multer.File,
@@ -36,4 +37,23 @@ export const getSignedS3Url = async (key: string) => {
   return getSignedUrl(s3, command, {
     expiresIn: 60 * 60, // 1 hour
   });
+};
+
+export const downloadFromS3 = async (key: string): Promise<Buffer> => {
+  const response = await s3.send(
+    new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME!,
+      Key: key,
+    })
+  );
+
+  const stream = response.Body as Readable;
+
+  const chunks: Buffer[] = [];
+
+  for await (const chunk of stream) {
+    chunks.push(Buffer.from(chunk));
+  }
+
+  return Buffer.concat(chunks);
 };
