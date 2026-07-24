@@ -6,7 +6,6 @@ import {
   updateApplicationStatus,
 } from "../../api/applicationApi";
 
-import Button from "../../components/ui/Button";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import StatusBadge from "../../components/common/StatusBadge";
 

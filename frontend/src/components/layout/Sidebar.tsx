@@ -10,7 +10,15 @@ import {
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks/useAuth";
 
-const Sidebar = () => {
+interface SidebarProps {
+  mobile?: boolean;
+  onClose?: () => void;
+}
+
+const Sidebar = ({
+  mobile = false,
+  onClose,
+}: SidebarProps) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -47,7 +55,11 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="flex min-h-screen w-64 flex-col bg-slate-900 text-white shadow-lg">
+    <aside
+      className={`flex h-full w-64 flex-col bg-slate-900 text-white shadow-lg ${
+        mobile ? "" : "min-h-screen"
+      }`}
+    >
       {/* Logo */}
       <div className="border-b border-slate-700 p-6">
         <h1 className="text-2xl font-bold tracking-wide">
@@ -66,19 +78,18 @@ const Sidebar = () => {
             <li key={item.path}>
               <NavLink
                 to={item.path}
+                onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
+                  `flex items-center gap-3 rounded-lg px-4 py-3 transition ${
                     isActive
-                      ? "bg-blue-600 text-white shadow"
+                      ? "bg-blue-600 text-white"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"
                   }`
                 }
               >
                 <span className="text-lg">{item.icon}</span>
 
-                <span className="font-medium">
-                  {item.label}
-                </span>
+                <span>{item.label}</span>
               </NavLink>
             </li>
           ))}

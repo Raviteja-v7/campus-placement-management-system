@@ -128,3 +128,76 @@ export const getDashboardStats = async () => {
         pendingApplications,
     };
 };
+
+export const getStudentDashboard = async (userId: string) => {
+    const profile = await StudentProfile.findOne({ userId });
+
+    if (!profile) {
+        throw new ApiError(404, "Profile not found");
+    }
+
+    const profileCompletionFields = [
+        profile.department,
+        profile.cgpa,
+        profile.phone,
+        profile.skills?.length,
+        profile.experience,
+        profile.avatarUrl,
+        profile.resumeUrl,
+    ];
+
+    const completedFields =
+        profileCompletionFields.filter(Boolean).length;
+
+    const profileCompletion = Math.round(
+        (completedFields / profileCompletionFields.length) * 100
+    );
+
+    const [appliedJobs, interviews, openJobs] =
+        await Promise.all([
+            Application.countDocuments({
+                student: userId,
+            }),
+
+            Application.countDocuments({
+                student: userId,
+                status: "interview",
+            }),
+
+            Job.countDocuments({
+                deadline: {
+                    $gte: new Date(),
+                },
+            }),
+        ]);
+
+    const recentApplications =
+        await Application.find({
+            student: userId,
+        })
+            .populate("job")
+            .sort({
+                createdAt: -1,
+            })
+            .limit(5);
+
+    const latestJobs =
+        await Job.find({
+            deadline: {
+                $gte: new Date(),
+            },
+        })
+            .sort({
+                createdAt: -1,
+            })
+            .limit(5);
+
+    return {
+        profileCompletion,
+        appliedJobs,
+        interviews,
+        openJobs,
+        recentApplications,
+        latestJobs,
+    };
+};
