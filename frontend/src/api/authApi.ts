@@ -3,7 +3,7 @@ import type { ApiResponse } from "../types/api";
 import type { LoginRequest, SignupRequest, User } from "../types/auth";
 
 export const signup = async (data: SignupRequest) => {
-  const response = await api.post<ApiResponse<User>>("/auth/signup", data);
+  const response = await api.post<ApiResponse<User>>("/auth/register", data);
   return response.data;
 };
 

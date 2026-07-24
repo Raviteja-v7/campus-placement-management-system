@@ -15,6 +15,8 @@ import { createProfileSchema, updateProfileSchema } from "../validators/profile.
 import { authorize } from "../middlewares/authorize.middleware.js";
 import { uploadImage } from "../middlewares/uploadImage.middleware.js";
 import { uploadResume } from "../middlewares/uploadResume.middleware.js";
+import { getDashboardStats_ } from "../controllers/profile.controller.js";
+
 const router = Router();
 
 router.post("/me", protect, validate(createProfileSchema), createStudentProfile);
@@ -23,6 +25,7 @@ router.patch("/me", protect, validate(updateProfileSchema), updateStudentProfile
 router.get("/", protect, authorize("admin"), getProfiles);
 router.post( "/me/image", protect, uploadImage.single("image"), uploadImage_ );
 router.post( "/me/resume", protect, uploadResume.single("resume"), uploadResume_ );
+router.get( "/dashboard", protect, authorize("admin"), getDashboardStats_);
 router.get( "/:id", protect, authorize("admin"), getProfile );
 
 export default router;

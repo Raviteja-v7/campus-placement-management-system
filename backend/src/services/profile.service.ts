@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import type { CreateProfileInput, UpdateProfileInput } from "../validators/profile.validator.js";
 import { uploadToS3 } from "../utils/uploadToS3.js";
 import { attachSignedUrls } from "../utils/profile.helper.js";
+import Application from "../models/Application.model.js";
+import Job from "../models/Job.model.js";
 
 interface CreateProfileData extends CreateProfileInput {
   userId: string;
@@ -47,9 +49,12 @@ export const updateProfile = async (userId: string, updates: UpdateProfileInput)
 
 
 export const getAllProfiles = async () => {
-  return StudentProfile.find().populate("userId");
-};
+  const profiles = await StudentProfile.find().populate("userId");
 
+  return Promise.all(
+    profiles.map((profile) => attachSignedUrls(profile))
+  );
+};
 
 export const getProfileById = async (id: string) => {
   const profile = await StudentProfile.findById(id).populate("userId");
@@ -98,4 +103,28 @@ export const uploadResume = async (
   await profile.save();
 
   return await attachSignedUrls(profile);
+};
+
+
+export const getDashboardStats = async () => {
+    const [
+        totalStudents,
+        totalJobs,
+        totalApplications,
+        pendingApplications,
+    ] = await Promise.all([
+        StudentProfile.countDocuments(),
+        Job.countDocuments(),
+        Application.countDocuments(),
+        Application.countDocuments({
+            status: "pending",
+        }),
+    ]);
+
+    return {
+        totalStudents,
+        totalJobs,
+        totalApplications,
+        pendingApplications,
+    };
 };

@@ -21,8 +21,8 @@ const Login = () => {
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-            <Card className="w-full max-w-md">
-                <h1 className="mb-6 text-center text-3xl font-bold">
+            <Card className="w-full max-w-md p-8">
+                <h1 className="mb-8 text-center text-4xl font-bold text-slate-900">
                     Login
                 </h1>
 
@@ -59,7 +59,7 @@ const Login = () => {
                         handleBlur,
                         isSubmitting,
                     }) => (
-                        <Form>
+                        <Form className="space-y-5">
                             <Input
                                 label="Email"
                                 name="email"
@@ -97,27 +97,34 @@ const Login = () => {
 
                                 <button
                                     type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    className="absolute inset-y-0 right-4 flex items-center pt-7 text-gray-500 transition hover:text-blue-600"
                                 >
-                                    {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                                    {showPassword ? (
+                                        <FiEyeOff size={20} />
+                                    ) : (
+                                        <FiEye size={20} />
+                                    )}
                                 </button>
                             </div>
 
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}
+                                className="w-full"
                             >
                                 {isSubmitting
                                     ? "Signing In..."
                                     : "Sign In"}
                             </Button>
 
-                            <p className="mt-4 text-center text-sm">
+                            <p className="text-center text-sm text-gray-600">
                                 Don't have an account?{" "}
                                 <Link
                                     to={ROUTES.SIGNUP}
-                                    className="font-medium text-blue-600 hover:underline"
+                                    className="font-semibold text-blue-600 hover:underline"
                                 >
                                     Sign Up
                                 </Link>

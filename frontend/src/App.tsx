@@ -21,6 +21,8 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminJobs from "./pages/admin/Jobs";
 import Students from "./pages/admin/Students";
 import AdminApplications from "./pages/admin/Applications";
+import CreateJob from "./pages/admin/CreateJob";
+import EditJob from "./pages/admin/EditJob";
 
 import { ROUTES } from "./constants/routes";
 import { ToastContainer } from "react-toastify";
@@ -68,26 +70,39 @@ function App() {
 </Route>
 
         {/* Admin Routes */}
-        <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-          <Route element={<AdminLayout />}>
-            <Route
-              path={ROUTES.ADMIN.DASHBOARD}
-              element={<AdminDashboard />}
-            />
-            <Route
-              path={ROUTES.ADMIN.JOBS}
-              element={<AdminJobs />}
-            />
-            <Route
-              path={ROUTES.ADMIN.STUDENTS}
-              element={<Students />}
-            />
-            <Route
-              path={ROUTES.ADMIN.APPLICATIONS}
-              element={<AdminApplications />}
-            />
-          </Route>
-        </Route>
+<Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+  <Route element={<AdminLayout />}>
+    <Route
+      path={ROUTES.ADMIN.DASHBOARD}
+      element={<AdminDashboard />}
+    />
+
+    <Route
+      path={ROUTES.ADMIN.JOBS}
+      element={<AdminJobs />}
+    />
+
+    <Route
+      path={ROUTES.ADMIN.CREATE_JOB}
+      element={<CreateJob />}
+    />
+
+    <Route
+      path={ROUTES.ADMIN.EDIT_JOB}
+      element={<EditJob />}
+    />
+
+    <Route
+      path={ROUTES.ADMIN.STUDENTS}
+      element={<Students />}
+    />
+
+    <Route
+      path={ROUTES.ADMIN.APPLICATIONS}
+      element={<AdminApplications />}
+    />
+  </Route>
+</Route>
 
         {/* Default */}
         <Route
