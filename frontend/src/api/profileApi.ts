@@ -6,6 +6,7 @@ import type {
   CreateProfileRequest,
   UpdateProfileRequest,
 } from "../types/profile";
+import type { DashboardStats } from "../types/dashboard";
 
 export const getMyProfile = async () => {
   const response =
@@ -15,6 +16,13 @@ export const getMyProfile = async () => {
 
   return response.data;
 };
+
+
+export const getProfiles = async () => {
+    const response = await api.get<ApiResponse<StudentProfile[]>>("/profile");
+    return response.data;
+};
+
 
 export const createProfile = async (
   data: CreateProfileRequest
@@ -70,4 +78,12 @@ export const uploadResume = async (
     );
 
   return response.data;
+};
+
+export const getDashboardStats = async () => {
+    const response = await api.get<ApiResponse<DashboardStats>>(
+        "/profile/dashboard"
+    );
+
+    return response.data;
 };

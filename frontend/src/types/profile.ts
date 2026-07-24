@@ -1,6 +1,9 @@
+import type { User } from "./auth";
+
 export interface StudentProfile {
   _id: string;
-  userId: string;
+
+  userId: User;
 
   department: string;
   cgpa: number;

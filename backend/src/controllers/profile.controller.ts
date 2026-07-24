@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { createProfile, getProfileByUserId, updateProfile, getAllProfiles, getProfileById, uploadProfileImage, uploadResume } from "../services/profile.service.js";
+import { createProfile, getProfileByUserId, updateProfile, getAllProfiles, getProfileById, uploadProfileImage, uploadResume, getDashboardStats } from "../services/profile.service.js";
 import type { IdParams } from "../types/request.types.js";
 import { ApiError } from "../utils/ApiError.js";
 
@@ -91,3 +91,14 @@ export const uploadResume_ = asyncHandler(async (req, res) => {
     data: profile,
   });
 });
+
+
+export const getDashboardStats_: RequestHandler =
+    asyncHandler(async (_req, res) => {
+        const stats = await getDashboardStats();
+
+        res.json({
+            success: true,
+            data: stats,
+        });
+    });
