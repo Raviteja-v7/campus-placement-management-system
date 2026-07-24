@@ -4,6 +4,7 @@ import type {
   CreateJobInput,
   UpdateJobInput,
 } from "../validators/job.validator.js";
+import Application from "../models/Application.model.js";
 
 export const createJob = async (
   data: CreateJobInput,
@@ -46,6 +47,7 @@ export const updateJob = async (
 };
 
 export const deleteJob = async (id: string) => {
+  await Application.deleteMany({ job: id });
   const job = await Job.findByIdAndDelete(id);
 
   if (!job) {
