@@ -8,6 +8,7 @@ import {
   getProfile,
   uploadImage_,
   uploadResume_,
+  getStudentDashboard_,
 } from "../controllers/profile.controller.js";
 import { protect } from "../middlewares/protect.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
@@ -26,6 +27,7 @@ router.get("/", protect, authorize("admin"), getProfiles);
 router.post( "/me/image", protect, uploadImage.single("image"), uploadImage_ );
 router.post( "/me/resume", protect, uploadResume.single("resume"), uploadResume_ );
 router.get( "/dashboard", protect, authorize("admin"), getDashboardStats_);
+router.get( "/student-dashboard", protect, authorize("student"), getStudentDashboard_ );
 router.get( "/:id", protect, authorize("admin"), getProfile );
 
 export default router;

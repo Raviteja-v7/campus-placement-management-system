@@ -7,6 +7,7 @@ import type {
   UpdateProfileRequest,
 } from "../types/profile";
 import type { DashboardStats } from "../types/dashboard";
+import type { StudentDashboard } from "../types/studentDashboard";
 
 export const getMyProfile = async () => {
   const response =
@@ -83,6 +84,14 @@ export const uploadResume = async (
 export const getDashboardStats = async () => {
     const response = await api.get<ApiResponse<DashboardStats>>(
         "/profile/dashboard"
+    );
+
+    return response.data;
+};
+
+export const getStudentDashboard = async () => {
+    const response = await api.get<ApiResponse<StudentDashboard>>(
+        "/profile/student-dashboard"
     );
 
     return response.data;

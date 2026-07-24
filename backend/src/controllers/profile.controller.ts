@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { createProfile, getProfileByUserId, updateProfile, getAllProfiles, getProfileById, uploadProfileImage, uploadResume, getDashboardStats } from "../services/profile.service.js";
+import { createProfile, getProfileByUserId, updateProfile, getAllProfiles, getProfileById, uploadProfileImage, uploadResume, getDashboardStats, getStudentDashboard } from "../services/profile.service.js";
 import type { IdParams } from "../types/request.types.js";
 import { ApiError } from "../utils/ApiError.js";
 
@@ -102,3 +102,19 @@ export const getDashboardStats_: RequestHandler =
             data: stats,
         });
     });
+
+
+export const getStudentDashboard_: RequestHandler =
+asyncHandler(async (req, res) => {
+
+    const dashboard =
+        await getStudentDashboard(
+            req.user!.id
+        );
+
+    res.json({
+        success: true,
+        data: dashboard,
+    });
+
+});
