@@ -6,6 +6,7 @@ import {
   FaFileAlt,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks/useAuth";
@@ -26,6 +27,7 @@ const Sidebar = ({
     try {
       await logout();
       navigate(ROUTES.LOGIN);
+      toast.success("Logged out successfully");
     } catch (error) {
       console.error(error);
     }
@@ -56,9 +58,9 @@ const Sidebar = ({
 
   return (
     <aside
-      className={`flex h-full w-64 flex-col bg-slate-900 text-white shadow-lg ${
-        mobile ? "" : "min-h-screen"
-      }`}
+      className={`flex ${
+        mobile ? "h-full" : "h-screen"
+      } w-64 flex-col bg-slate-900 text-white shadow-lg`}
     >
       {/* Logo */}
       <div className="border-b border-slate-700 p-6">
@@ -72,7 +74,7 @@ const Sidebar = ({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6">
+      <nav className="flex-1 overflow-y-auto px-4 py-6">
         <ul className="space-y-2">
           {navItems.map((item) => (
             <li key={item.path}>
@@ -80,9 +82,9 @@ const Sidebar = ({
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-4 py-3 transition ${
+                  `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-600 text-white"
+                      ? "bg-blue-600 text-white shadow-md"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"
                   }`
                 }
@@ -100,9 +102,9 @@ const Sidebar = ({
       <div className="border-t border-slate-700 p-4">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-300 transition hover:bg-red-600 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-lg bg-red-600 px-4 py-3 text-white transition-all duration-200 hover:bg-red-700"
         >
-          <FaSignOutAlt />
+          <FaSignOutAlt className="text-lg" />
 
           <span>Logout</span>
         </button>

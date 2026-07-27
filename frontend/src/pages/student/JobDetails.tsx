@@ -8,6 +8,7 @@ import { applyForJob } from "../../api/applicationApi";
 import Button from "../../components/ui/Button";
 
 import type { Job } from "../../types/job";
+import Loader from "../../components/common/Loader";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -58,7 +59,7 @@ const JobDetails = () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (!job) {

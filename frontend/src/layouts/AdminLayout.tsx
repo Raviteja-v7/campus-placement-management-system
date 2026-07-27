@@ -8,9 +8,9 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
+      <div className="fixed left-0 top-0 hidden h-screen w-64 md:block">
         <Sidebar />
       </div>
 
@@ -22,7 +22,7 @@ const AdminLayout = () => {
             onClick={() => setSidebarOpen(false)}
           />
 
-          <div className="fixed left-0 top-0 z-50 h-full md:hidden">
+          <div className="fixed left-0 top-0 z-50 h-screen w-64 md:hidden">
             <Sidebar
               mobile
               onClose={() => setSidebarOpen(false)}
@@ -32,7 +32,7 @@ const AdminLayout = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-h-screen flex-col md:ml-64">
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}

@@ -12,6 +12,7 @@ import {
 } from "../../api/jobApi";
 
 import { ROUTES } from "../../constants/routes";
+import Loader from "../../components/common/Loader";
 
 const EditJob = () => {
     const { id } = useParams();
@@ -100,7 +101,7 @@ const handleSubmit = async (
 
 
 if (loading) {
-  return <p>Loading...</p>;
+  return <Loader />;
 }
 
 if (!initialValues) {

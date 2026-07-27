@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { ROUTES } from "../constants/routes";
 import { ROLES } from "../constants/roles";
 import type { UserRole } from "../types/auth";
+import Loader from "../components/common/Loader";
 
 interface PrivateRouteProps {
     allowedRoles: UserRole[];
@@ -12,7 +13,7 @@ const PrivateRoute = ({ allowedRoles }: PrivateRouteProps) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return <Loader />;
   }
 
   if (!user) {

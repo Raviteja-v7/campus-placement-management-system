@@ -6,6 +6,7 @@ import { getApplications } from "../../api/applicationApi";
 import StatusBadge from "../../components/common/StatusBadge";
 
 import type { Application } from "../../types/application";
+import Loader from "../../components/common/Loader";
 
 const Applications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -27,7 +28,7 @@ const Applications = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (

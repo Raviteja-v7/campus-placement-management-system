@@ -7,6 +7,7 @@ import { getMyProfile } from "../../api/profileApi";
 import type { StudentProfile } from "../../types/profile";
 
 import Button from "../../components/ui/Button";
+import Loader from "../../components/common/Loader";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -38,9 +39,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center">
-        Loading...
-      </div>
+      <Loader />
     );
   }
 

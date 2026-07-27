@@ -14,6 +14,7 @@ import {
 } from "../api/authApi";
 
 import type { AuthContextType, User } from "../types/auth";
+import { toast } from "react-toastify/unstyled";
 
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
