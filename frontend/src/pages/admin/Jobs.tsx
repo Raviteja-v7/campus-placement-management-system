@@ -78,7 +78,7 @@ const Jobs = () => {
 
       {/* Content */}
       {loading ? (
-        <Loader />;
+        <Loader />
       ) : jobs.length === 0 ? (
         <div className="rounded-lg bg-white p-8 text-center shadow">
           <p className="text-gray-500">No jobs created yet.</p>

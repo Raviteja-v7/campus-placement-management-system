@@ -5,6 +5,7 @@ import { getJobs } from "../../api/jobApi";
 import { getRecommendations } from "../../api/aiApi";
 
 import type { Job } from "../../types/job";
+import Loader from "../../components/common/Loader";
 
 type RecommendedJob = {
   job: Job;
@@ -58,7 +59,7 @@ const Jobs = () => {
   };
 
   if (loading) {
-    return <p>Loading jobs...</p>;
+    return <Loader />;
   }
 
   const displayedJobs = showRecommended
