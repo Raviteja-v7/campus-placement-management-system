@@ -42,8 +42,15 @@ export const getMe: RequestHandler = asyncHandler(async (req, res) => {
 });
 
 export const logoutUser: RequestHandler = asyncHandler(async (_req, res) => {
-  res.clearCookie("token").status(200).json({
-    success: true,
-    message: "Logged out successfully",
-  });
+  res
+    .clearCookie("token", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .json({
+      success: true,
+      message: "Logged out successfully",
+    });
 });

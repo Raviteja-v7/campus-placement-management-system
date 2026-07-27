@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 import { getApplications } from "../../api/applicationApi";
 
 import StatusBadge from "../../components/common/StatusBadge";
+import Loader from "../../components/common/Loader";
 
 import type { Application } from "../../types/application";
-import Loader from "../../components/common/Loader";
 
 const Applications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -33,6 +33,7 @@ const Applications = () => {
 
   return (
     <div>
+      {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold">
           My Applications
@@ -43,6 +44,7 @@ const Applications = () => {
         </p>
       </div>
 
+      {/* Content */}
       {applications.length === 0 ? (
         <div className="rounded-xl bg-white p-10 text-center shadow">
           <p className="text-gray-500">
@@ -50,57 +52,59 @@ const Applications = () => {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl bg-white shadow">
-          <table className="min-w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-4 text-left">
-                  Company
-                </th>
+        <div className="rounded-xl bg-white shadow">
+          <div className="overflow-x-auto">
+            <table className="min-w-[750px] w-full">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-6 py-4 text-left font-semibold">
+                    Company
+                  </th>
 
-                <th className="px-6 py-4 text-left">
-                  Job
-                </th>
+                  <th className="px-6 py-4 text-left font-semibold">
+                    Job
+                  </th>
 
-                <th className="px-6 py-4 text-left">
-                  Applied On
-                </th>
+                  <th className="px-6 py-4 text-left font-semibold whitespace-nowrap">
+                    Applied On
+                  </th>
 
-                <th className="px-6 py-4 text-center">
-                  Status
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {applications.map((application) => (
-                <tr
-                  key={application._id}
-                  className="border-t"
-                >
-                  <td className="px-6 py-4">
-                    {application.job.company}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    {application.job.title}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    {new Date(
-                      application.appliedAt
-                    ).toLocaleDateString()}
-                  </td>
-
-                  <td className="px-6 py-4 text-center">
-                    <StatusBadge
-                      status={application.status}
-                    />
-                  </td>
+                  <th className="min-w-[140px] px-6 py-4 text-center font-semibold">
+                    Status
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {applications.map((application) => (
+                  <tr
+                    key={application._id}
+                    className="border-t hover:bg-gray-50"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {application.job.company}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      {application.job.title}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(
+                        application.appliedAt
+                      ).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4 text-center">
+                      <StatusBadge
+                        status={application.status}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

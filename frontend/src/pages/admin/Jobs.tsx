@@ -4,12 +4,12 @@ import { toast } from "react-toastify";
 
 import Button from "../../components/ui/Button";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
+import Loader from "../../components/common/Loader";
 
 import { getJobs, deleteJob } from "../../api/jobApi";
 import { ROUTES } from "../../constants/routes";
 
 import type { Job } from "../../types/job";
-import Loader from "../../components/common/Loader";
 
 const Jobs = () => {
   const navigate = useNavigate();
@@ -62,16 +62,22 @@ const Jobs = () => {
   return (
     <div>
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Manage Jobs</h1>
+          <h1 className="text-3xl font-bold">
+            Manage Jobs
+          </h1>
 
           <p className="text-gray-500">
             Create, update, and manage job postings.
           </p>
         </div>
 
-        <Button onClick={() => navigate(ROUTES.ADMIN.CREATE_JOB)}>
+        <Button
+          onClick={() =>
+            navigate(ROUTES.ADMIN.CREATE_JOB)
+          }
+        >
           + Create Job
         </Button>
       </div>
@@ -80,62 +86,94 @@ const Jobs = () => {
       {loading ? (
         <Loader />
       ) : jobs.length === 0 ? (
-        <div className="rounded-lg bg-white p-8 text-center shadow">
-          <p className="text-gray-500">No jobs created yet.</p>
+        <div className="rounded-xl bg-white p-10 text-center shadow">
+          <p className="text-gray-500">
+            No jobs created yet.
+          </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl bg-white shadow">
-          <table className="min-w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-4 text-left">Title</th>
-                <th className="px-6 py-4 text-left">Company</th>
-                <th className="px-6 py-4 text-left">Location</th>
-                <th className="px-6 py-4 text-left">Deadline</th>
-                <th className="px-6 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
+        <div className="rounded-xl bg-white shadow">
+          <div className="overflow-x-auto">
+            <table className="min-w-[900px] w-full">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-6 py-4 text-left font-semibold">
+                    Title
+                  </th>
 
-            <tbody>
-              {jobs.map((job) => (
-                <tr key={job._id} className="border-t">
-                  <td className="px-6 py-4">{job.title}</td>
+                  <th className="px-6 py-4 text-left font-semibold">
+                    Company
+                  </th>
 
-                  <td className="px-6 py-4">{job.company}</td>
+                  <th className="px-6 py-4 text-left font-semibold">
+                    Location
+                  </th>
 
-                  <td className="px-6 py-4">{job.location}</td>
+                  <th className="px-6 py-4 text-left font-semibold whitespace-nowrap">
+                    Deadline
+                  </th>
 
-                  <td className="px-6 py-4">
-                    {new Date(job.deadline).toLocaleDateString()}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex justify-center gap-2">
-                      <Button
-                        variant="secondary"
-                        onClick={() =>
-                          navigate(`/admin/jobs/${job._id}/edit`)
-                        }
-                      >
-                        Edit
-                      </Button>
-
-                      <Button
-                        variant="danger"
-                        onClick={() => setSelectedJob(job)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </td>
+                  <th className="min-w-[180px] px-6 py-4 text-center font-semibold">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {jobs.map((job) => (
+                  <tr
+                    key={job._id}
+                    className="border-t hover:bg-gray-50"
+                  >
+                    <td className="px-6 py-4">
+                      {job.title}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {job.company}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {job.location}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(
+                        job.deadline
+                      ).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <div className="flex justify-center gap-2">
+                        <Button
+                          variant="secondary"
+                          onClick={() =>
+                            navigate(
+                              `/admin/jobs/${job._id}/edit`
+                            )
+                          }
+                        >
+                          Edit
+                        </Button>
+
+                        <Button
+                          variant="danger"
+                          onClick={() =>
+                            setSelectedJob(job)
+                          }
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {/* ONE Confirmation Dialog */}
       <ConfirmDialog
         open={!!selectedJob}
         variant="danger"
