@@ -1,4 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, {
+  type HydratedDocument,
+  type InferSchemaType,
+} from "mongoose";
 
 const jobSchema = new mongoose.Schema(
   {
@@ -60,6 +63,10 @@ const jobSchema = new mongoose.Schema(
   }
 );
 
-const Job = mongoose.model("Job", jobSchema);
+export type IJob = InferSchemaType<typeof jobSchema>;
+
+export type JobDocument = HydratedDocument<IJob>;
+
+const Job = mongoose.model<IJob>("Job", jobSchema);
 
 export default Job;
