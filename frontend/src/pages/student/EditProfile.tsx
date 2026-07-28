@@ -15,10 +15,7 @@ import {
   uploadResume,
 } from "../../api/profileApi";
 
-import type {
-  StudentProfile,
-  CreateProfileRequest,
-} from "../../types/profile";
+import type { StudentProfile, CreateProfileRequest } from "../../types/profile";
 
 const defaultValues: CreateProfileRequest = {
   department: "",
@@ -33,14 +30,11 @@ const EditProfile = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [profile, setProfile] =
-    useState<StudentProfile | null>(null);
+  const [profile, setProfile] = useState<StudentProfile | null>(null);
 
-  const [avatar, setAvatar] =
-    useState<File | null>(null);
+  const [avatar, setAvatar] = useState<File | null>(null);
 
-  const [resume, setResume] =
-    useState<File | null>(null);
+  const [resume, setResume] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -49,10 +43,7 @@ const EditProfile = () => {
 
         setProfile(response.data);
       } catch (error) {
-        if (
-          axios.isAxiosError(error) &&
-          error.response?.status === 404
-        ) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
           setProfile(null);
         } else {
           toast.error("Failed to load profile");
@@ -65,14 +56,31 @@ const EditProfile = () => {
     fetchProfile();
   }, []);
 
-  const handleSubmit = async (
-    values: CreateProfileRequest
-  ) => {
+  const handleSubmit = async (values: CreateProfileRequest) => {
     try {
-      if (profile) {
-        await updateProfile(values);
-      } else {
-        await createProfile(values);
+      // Determine whether profile fields changed
+      const profileChanged =
+        !profile ||
+        JSON.stringify(values) !==
+          JSON.stringify({
+            department: profile.department,
+            cgpa: profile.cgpa,
+            phone: profile.phone,
+            experience: profile.experience,
+            skills: profile.skills,
+          });
+
+      if (!profileChanged && !avatar && !resume) {
+        toast.info("No changes detected.");
+        return;
+      }
+
+      if (profileChanged) {
+        if (profile) {
+          await updateProfile(values);
+        } else {
+          await createProfile(values);
+        }
       }
 
       if (avatar) {
@@ -86,7 +94,7 @@ const EditProfile = () => {
       toast.success(
         profile
           ? "Profile updated successfully"
-          : "Profile created successfully"
+          : "Profile created successfully",
       );
 
       navigate("/student/profile");
@@ -103,7 +111,8 @@ const EditProfile = () => {
       </div>
     );
   }
-    return (
+
+  return (
     <div className="mx-auto max-w-3xl rounded-xl bg-white p-8 shadow">
       <h1 className="mb-8 text-center text-3xl font-bold">
         {profile ? "Edit Profile" : "Complete Your Profile"}
@@ -133,6 +142,7 @@ const EditProfile = () => {
         }
         onSubmit={handleSubmit}
         isEditing={!!profile}
+        hasFileChanges={!!avatar || !!resume}
       />
     </div>
   );

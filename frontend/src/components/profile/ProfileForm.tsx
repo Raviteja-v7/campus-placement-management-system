@@ -5,17 +5,20 @@ import Button from "../ui/Button";
 
 import { profileSchema } from "../../validation/profileSchema";
 import type { CreateProfileRequest } from "../../types/profile";
+import { useEffect, useState } from "react";
 
 interface ProfileFormProps {
   initialValues: CreateProfileRequest;
   onSubmit: (values: CreateProfileRequest) => Promise<void>;
   isEditing?: boolean;
+  hasFileChanges?: boolean;
 }
 
 const ProfileForm = ({
   initialValues,
   onSubmit,
   isEditing = false,
+  hasFileChanges = false,
 }: ProfileFormProps) => {
   return (
     <Formik
@@ -38,110 +41,127 @@ const ProfileForm = ({
         handleBlur,
         setFieldValue,
         isSubmitting,
-      }) => (
-        <Form className="space-y-5">
-          <Input
-            label="Department"
-            name="department"
-            value={values.department}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Computer Science"
-            error={touched.department ? errors.department : undefined}
-          />
+        dirty,
+      }) => {
+        const [skillsInput, setSkillsInput] = useState(
+          values.skills.join(", "),
+        );
 
-          <Input
-            label="CGPA"
-            name="cgpa"
-            type="number"
-            step="0.01"
-            value={values.cgpa}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="8.50"
-            error={touched.cgpa ? errors.cgpa : undefined}
-          />
+        useEffect(() => {
+          setSkillsInput(values.skills.join(", "));
+        }, [values.skills]);
 
-          <Input
-            label="Phone"
-            name="phone"
-            value={values.phone}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="9876543210"
-            error={touched.phone ? errors.phone : undefined}
-          />
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Experience
-            </label>
-
-            <textarea
-              name="experience"
-              rows={5}
-              value={values.experience}
+        return (
+          <Form className="space-y-5">
+            <Input
+              label="Department"
+              name="department"
+              value={values.department}
               onChange={handleChange}
               onBlur={handleBlur}
-              placeholder="Describe your internships, projects, achievements..."
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition focus:border-blue-500"
+              placeholder="Computer Science"
+              error={touched.department ? errors.department : undefined}
             />
 
-            {touched.experience && errors.experience && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.experience}
-              </p>
-            )}
-          </div>
+            <Input
+              label="CGPA"
+              name="cgpa"
+              type="number"
+              step="0.01"
+              value={values.cgpa}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="8.50"
+              error={touched.cgpa ? errors.cgpa : undefined}
+            />
 
-          <Input
-            label="Skills"
-            name="skills"
-            value={values.skills.join(", ")}
-            onBlur={handleBlur}
-            onChange={(e) =>
-              setFieldValue(
-                "skills",
-                e.target.value
-                  .split(",")
-                  .map((skill) => skill.trim())
-                  .filter(Boolean)
-              )
-            }
-            placeholder="React, Node.js, AWS, MongoDB"
-            error={
-              touched.skills && typeof errors.skills === "string"
-                ? errors.skills
-                : undefined
-            }
-          />
+            <Input
+              label="Phone"
+              name="phone"
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="9876543210"
+              error={touched.phone ? errors.phone : undefined}
+            />
 
-          <div className="flex justify-end gap-3 pt-4">
-  {isEditing && (
-    <Button
-  type="button"
-  variant="secondary"
-  onClick={() => window.history.back()}
->
-  Cancel
-</Button>
-  )}
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Experience
+              </label>
 
-  <Button
-  type="submit"
-  variant="primary"
-  disabled={isSubmitting}
-  className={!isEditing ? "w-full" : ""}
->
-  {isSubmitting
-    ? "Saving..."
-    : isEditing
-    ? "Update Profile"
-    : "Create Profile"}
-</Button>
-</div>
-        </Form>
-      )}
+              <textarea
+                name="experience"
+                rows={5}
+                value={values.experience}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Describe your internships, projects, achievements..."
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition focus:border-blue-500"
+              />
+
+              {touched.experience && errors.experience && (
+                <p className="mt-1 text-sm text-red-500">{errors.experience}</p>
+              )}
+            </div>
+
+            <Input
+              label="Skills"
+              name="skills"
+              value={skillsInput}
+              onBlur={handleBlur}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setSkillsInput(value);
+
+                setFieldValue(
+                  "skills",
+                  value
+                    .split(",")
+                    .map((skill) => skill.trim())
+                    .filter(Boolean),
+                );
+              }}
+              placeholder="React, Node.js, AWS, MongoDB"
+              error={
+                touched.skills && typeof errors.skills === "string"
+                  ? errors.skills
+                  : undefined
+              }
+            />
+
+            <div className="flex justify-end gap-3 pt-4">
+              {isEditing && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => window.history.back()}
+                >
+                  Cancel
+                </Button>
+              )}
+
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={
+                  isSubmitting || (isEditing && !dirty && !hasFileChanges)
+                }
+                className={!isEditing ? "w-full" : ""}
+              >
+                {isSubmitting
+                  ? "Saving..."
+                  : isEditing
+                    ? dirty || hasFileChanges
+                      ? "Update Profile"
+                      : "No Changes"
+                    : "Create Profile"}
+              </Button>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

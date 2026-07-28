@@ -35,8 +35,8 @@ const JobForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={jobSchema}
-      onSubmit={onSubmit}
       enableReinitialize
+      onSubmit={onSubmit}
     >
       {({
         values,
@@ -45,6 +45,7 @@ const JobForm = ({
         handleChange,
         handleBlur,
         isSubmitting,
+        dirty,
       }) => (
         <Form className="space-y-4">
           <Input
@@ -92,11 +93,7 @@ const JobForm = ({
             value={values.minimumCGPA}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={
-              touched.minimumCGPA
-                ? errors.minimumCGPA
-                : ""
-            }
+            error={touched.minimumCGPA ? errors.minimumCGPA : ""}
           />
 
           <Input
@@ -106,11 +103,7 @@ const JobForm = ({
             value={values.deadline}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={
-              touched.deadline
-                ? errors.deadline
-                : ""
-            }
+            error={touched.deadline ? errors.deadline : ""}
           />
 
           <div>
@@ -127,12 +120,9 @@ const JobForm = ({
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             />
 
-            {touched.description &&
-              errors.description && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.description}
-                </p>
-              )}
+            {touched.description && errors.description && (
+              <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           <Input
@@ -161,20 +151,17 @@ const JobForm = ({
 
           <div className="flex justify-end gap-4 pt-4">
             {onCancel && (
-            <Button
-                type="button"
-                variant="secondary"
-                onClick={onCancel}
-            >
+              <Button type="button" variant="secondary" onClick={onCancel}>
                 Cancel
-            </Button>
+              </Button>
             )}
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {submitText}
+            <Button type="submit" disabled={isSubmitting || !dirty}>
+              {isSubmitting
+                ? "Updating..."
+                : !dirty
+                  ? "No Changes"
+                  : submitText}
             </Button>
           </div>
         </Form>
