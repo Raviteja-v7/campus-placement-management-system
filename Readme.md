@@ -10,8 +10,8 @@ A full-stack Campus Placement Management System that streamlines the recruitment
 
 - Register & Login using JWT Authentication
 - Complete and update profile
-- Upload profile picture
-- Upload resume (PDF)
+- Upload profile picture to AWS S3
+- Upload resume (PDF) to AWS S3
 - Browse available job opportunities
 - View job details
 - Apply for jobs
@@ -46,11 +46,12 @@ Roles:
 
 ---
 
-### 📂 File Uploads
+## 📂 File Uploads
 
 - Profile Image Upload
 - Resume Upload (PDF)
-- Cloudinary Integration
+- AWS S3 Object Storage
+- Secure File Access
 
 ---
 
@@ -68,8 +69,7 @@ Embeddings are stored in **Qdrant Vector Database** to perform similarity search
 ## 🛠 Tech Stack
 
 ### Frontend
-
-- React
+- React 19
 - TypeScript
 - React Router
 - Tailwind CSS
@@ -78,17 +78,23 @@ Embeddings are stored in **Qdrant Vector Database** to perform similarity search
 - Axios
 - React Toastify
 
----
-
 ### Backend
-
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
 - JWT
 - Multer
-- Cloudinary
+- AWS S3
+- AWS SDK v3
+
+### AI & Search
+- Google Gemini Embeddings
+- Qdrant Vector Database
+
+### Authentication
+- JWT
+- HTTP-only Cookies
 
 ---
 
@@ -301,6 +307,20 @@ npm run dev
 
 ---
 
+## ✨ Key Features
+
+- JWT Authentication using HTTP-only Cookies
+- Role-Based Access Control (Student/Admin)
+- Profile & Resume Management
+- AWS S3 Integration for File Storage
+- Job Management (CRUD)
+- Application Tracking
+- Duplicate Application Prevention
+- AI-powered Job Recommendation using Gemini Embeddings + Qdrant
+- Semantic Vector Search
+- Form Validation with Formik & Yup
+- Responsive UI with Tailwind CSS
+
 ## Environment Variables
 
 ### Backend (.env)
@@ -312,11 +332,13 @@ MONGODB_URI=
 
 JWT_SECRET=
 
-CLOUDINARY_CLOUD_NAME=
+AWS_REGION=
 
-CLOUDINARY_API_KEY=
+AWS_ACCESS_KEY_ID=
 
-CLOUDINARY_API_SECRET=
+AWS_SECRET_ACCESS_KEY=
+
+S3_BUCKET_NAME=
 
 GEMINI_API_KEY=
 
@@ -369,7 +391,8 @@ VITE_API_BASE_URL=http://localhost:5000/api
 - Full Stack MERN Development
 - Authentication using JWT
 - Role-Based Access Control
-- File Uploads with Cloudinary
+- File Uploads using AWS S3
+- AWS SDK Integration
 - REST API Design
 - MongoDB Schema Design
 - Form Validation using Formik & Yup

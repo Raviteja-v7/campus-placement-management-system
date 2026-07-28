@@ -92,7 +92,7 @@ const Applications = () => {
       ) : (
         <div className="rounded-xl bg-white shadow">
           <div className="overflow-x-auto">
-            <table className="min-w-[1100px] w-full">
+            <table className="min-w-275 w-full">
               <thead className="bg-gray-100">
                 <tr>
                   <th className="px-6 py-4 text-left font-semibold">Student</th>
@@ -111,7 +111,7 @@ const Applications = () => {
                     Status
                   </th>
 
-                  <th className="min-w-[180px] px-6 py-4 text-center font-semibold">
+                  <th className="min-w-45 px-6 py-4 text-center font-semibold">
                     Actions
                   </th>
                 </tr>
