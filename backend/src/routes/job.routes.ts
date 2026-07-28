@@ -11,9 +11,9 @@ import {
 
 const router = Router();
 
-router.get("/", jobController.getJobs);
+router.get("/", protect, jobController.getJobs);
 
-router.get("/:id", jobController.getJob);
+router.get("/:id", protect, jobController.getJob);
 
 router.post(
   "/",

@@ -70,3 +70,15 @@ export const updateApplicationStatus = async (
 
   return application;
 };
+
+export const hasStudentApplied = async (
+  studentId: string,
+  jobId: string
+) => {
+  const application = await Application.findOne({
+    student: studentId,
+    job: jobId,
+  });
+
+  return !!application;
+};

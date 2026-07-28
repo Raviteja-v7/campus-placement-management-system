@@ -3,6 +3,7 @@ import type { IdParams } from "../types/request.types.js";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
 import * as jobService from "../services/job.service.js";
+import * as applicationService from "../services/application.service.js";
 
 export const createJob: RequestHandler = asyncHandler(async (req, res) => {
   const job = await jobService.createJob(req.body, req.user!.id);
@@ -24,10 +25,15 @@ export const getJobs: RequestHandler = asyncHandler(async (_req, res) => {
 
 export const getJob: RequestHandler<IdParams> = asyncHandler(async (req, res) => {
     const job = await jobService.getJobById(req.params.id);
+    const hasApplied =
+    await applicationService.hasStudentApplied(
+        req.user!.id,
+        req.params.id
+    );
 
     res.json({
       success: true,
-      data: job,
+      data: { ...job.toObject(), hasApplied },
     });
   }
 );

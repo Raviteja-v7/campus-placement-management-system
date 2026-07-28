@@ -26,7 +26,6 @@ import EditJob from "./pages/admin/EditJob";
 
 import { ROUTES } from "./constants/routes";
 import { ToastContainer } from "react-toastify";
-import RecommendationsPage from "./pages/student/RecommendationsPage";
 
 function App() {
   return (
@@ -68,10 +67,6 @@ function App() {
       element={<Applications />}
     />
 
-    <Route
-    path="/recommendations"
-    element={<RecommendationsPage />}
-/>
   </Route>
 </Route>
 

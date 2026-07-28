@@ -13,6 +13,7 @@ export interface Job {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  hasApplied?: boolean;
 }
 
 export interface CreateJobRequest {

@@ -25,6 +25,7 @@ const JobDetails = () => {
 
         const response = await getJob(id);
         setJob(response.data);
+        setHasApplied(response.data.hasApplied ?? false);
       } catch (error) {
         toast.error("Failed to load job.");
       } finally {

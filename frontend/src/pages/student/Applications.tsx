@@ -54,7 +54,7 @@ const Applications = () => {
       ) : (
         <div className="rounded-xl bg-white shadow">
           <div className="overflow-x-auto">
-            <table className="min-w-[750px] w-full">
+            <table className="min-w-187.5 w-full">
               <thead className="bg-gray-100">
                 <tr>
                   <th className="px-6 py-4 text-left font-semibold">
@@ -69,7 +69,7 @@ const Applications = () => {
                     Applied On
                   </th>
 
-                  <th className="min-w-[140px] px-6 py-4 text-center font-semibold">
+                  <th className="min-w-35 px-6 py-4 text-center font-semibold">
                     Status
                   </th>
                 </tr>
