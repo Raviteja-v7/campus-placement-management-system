@@ -4,11 +4,13 @@ import { useAuth } from "../../hooks/useAuth";
 interface NavbarProps {
   sidebarOpen: boolean;
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  subtitle?: string;
 }
 
 const Navbar = ({
   sidebarOpen,
   setSidebarOpen,
+  subtitle,
 }: NavbarProps) => {
   const { user } = useAuth();
 
@@ -29,7 +31,7 @@ const Navbar = ({
           </h2>
 
           <p className="hidden text-sm text-gray-500 md:block">
-            Student Dashboard
+            {subtitle}
           </p>
         </div>
       </div>

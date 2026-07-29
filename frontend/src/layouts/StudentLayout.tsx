@@ -36,6 +36,7 @@ const StudentLayout = () => {
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
+          subtitle="Student Dashboard"
         />
 
         <main className="flex-1 p-4 md:p-8">

@@ -36,6 +36,7 @@ const AdminLayout = () => {
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
+          subtitle="Admin Dashboard"
         />
 
         <main className="flex-1 p-4 md:p-8">
