@@ -35,7 +35,6 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
 
     password: {

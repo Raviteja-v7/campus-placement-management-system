@@ -1,5 +1,6 @@
 import Application from "../models/Application.model.js";
 import Job from "../models/Job.model.js";
+import { StudentProfile } from "../models/StudentProfile.model.js";
 
 import { ApiError } from "../utils/ApiError.js";
 
@@ -14,7 +15,27 @@ interface CreateApplicationData {
   jobId: string;
 }
 
-export const createApplication = async (data: CreateApplicationData) => {
+export const createApplication = async (
+  data: CreateApplicationData
+) => {
+  const profile = await StudentProfile.findOne({
+    userId: data.studentId,
+  });
+
+  if (!profile) {
+    throw new ApiError(
+      400,
+      "Please complete your profile before applying"
+    );
+  }
+
+  if (!profile.resumeUrl) {
+    throw new ApiError(
+      400,
+      "Please upload your resume before applying"
+    );
+  }
+
   const job = await Job.findById(data.jobId);
 
   if (!job) {
@@ -27,11 +48,32 @@ export const createApplication = async (data: CreateApplicationData) => {
   });
 
   if (existingApplication) {
-    throw new ApiError(409, "You have already applied for this job");
+    throw new ApiError(
+      409,
+      "You have already applied for this job"
+    );
   }
 
-  if (job.deadline < new Date()) {
-    throw new ApiError(400, "Application deadline has passed");
+  // Compare only the calendar date.
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const deadline = new Date(job.deadline);
+
+  if (Number.isNaN(deadline.getTime())) {
+    throw new ApiError(
+      500,
+      "Invalid job deadline"
+    );
+  }
+
+  deadline.setHours(0, 0, 0, 0);
+
+  if (deadline < today) {
+    throw new ApiError(
+      400,
+      "Application deadline has passed"
+    );
   }
 
   const application = await Application.create({
@@ -43,7 +85,9 @@ export const createApplication = async (data: CreateApplicationData) => {
   return application;
 };
 
-export const getApplications = async (user: AuthenticatedUser) => {
+export const getApplications = async (
+  user: AuthenticatedUser
+) => {
   if (user.role === ROLES.ADMIN) {
     return Application.find()
       .populate("job")
@@ -59,13 +103,21 @@ export const updateApplicationStatus = async (
   id: string,
   updates: UpdateApplicationStatusInput
 ) => {
-  const application = await Application.findByIdAndUpdate(id, updates, {
-    new: true,
-    runValidators: true,
-  });
+  const application =
+    await Application.findByIdAndUpdate(
+      id,
+      updates,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
   if (!application) {
-    throw new ApiError(404, "Application not found");
+    throw new ApiError(
+      404,
+      "Application not found"
+    );
   }
 
   return application;

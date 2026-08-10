@@ -1,7 +1,22 @@
 import * as yup from "yup";
 
 const title = yup.string().trim();
-const company = yup.string().trim();
+const company = yup
+  .string()
+  .trim()
+  .matches(
+    /[A-Za-z]/,
+    "Company name must contain at least one letter"
+  );
+
+const location = yup
+  .string()
+  .trim()
+  .matches(
+    /[A-Za-z]/,
+    "Location must contain at least one letter"
+  );
+  
 const description = yup.string().trim();
 
 const requirements = yup
@@ -9,8 +24,6 @@ const requirements = yup
   .of(yup.string().trim().required());
 
 const salary = yup.number().min(0);
-
-const location = yup.string().trim();
 
 const skillsRequired = yup
   .array()
@@ -25,7 +38,30 @@ const minimumCGPA = yup
   .min(0)
   .max(10);
 
-const deadline = yup.date();
+const deadline = yup
+  .string()
+  .required("Deadline is required")
+  .matches(
+    /^\d{4}-\d{2}-\d{2}$/,
+    "Deadline must be a valid date"
+  )
+  .test(
+    "not-in-past",
+    "Deadline cannot be in the past",
+    (value) => {
+      if (!value) return false;
+
+      const today = new Date();
+
+      const todayString = `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}-${String(
+        today.getDate()
+      ).padStart(2, "0")}`;
+
+      return value >= todayString;
+    }
+  );
 
 export const createJobSchema = yup.object({
   title: title.required(),
@@ -37,7 +73,7 @@ export const createJobSchema = yup.object({
   skillsRequired: skillsRequired.default([]),
   eligibleBranches: eligibleBranches.default([]),
   minimumCGPA: minimumCGPA.required(),
-  deadline: deadline.required(),
+  deadline,
 });
 
 export const updateJobSchema = yup.object({

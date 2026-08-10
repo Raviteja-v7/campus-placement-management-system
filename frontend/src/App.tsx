@@ -41,75 +41,50 @@ function App() {
 
         {/* Student Routes */}
         <Route element={<PrivateRoute allowedRoles={["student"]} />}>
-  <Route element={<StudentLayout />}>
-    <Route
-      path={ROUTES.STUDENT.DASHBOARD}
-      element={<StudentDashboard />}
-    />
-    <Route
-      path={ROUTES.STUDENT.PROFILE}
-      element={<Profile />}
-    />
-    <Route
-      path={ROUTES.STUDENT.EDIT_PROFILE}
-      element={<EditProfile />}
-    />
-    <Route
-      path={ROUTES.STUDENT.JOBS}
-      element={<Jobs />}
-    />
-    <Route
-      path={`${ROUTES.STUDENT.JOBS}/:id`}
-      element={<JobDetails />}
-    />
-    <Route
-      path={ROUTES.STUDENT.APPLICATIONS}
-      element={<Applications />}
-    />
-
-  </Route>
-</Route>
+          <Route element={<StudentLayout />}>
+            <Route
+              path={ROUTES.STUDENT.DASHBOARD}
+              element={<StudentDashboard />}
+            />
+            <Route path={ROUTES.STUDENT.PROFILE} element={<Profile />} />
+            <Route
+              path={ROUTES.STUDENT.EDIT_PROFILE}
+              element={<EditProfile />}
+            />
+            <Route path={ROUTES.STUDENT.JOBS} element={<Jobs />} />
+            <Route
+              path={`${ROUTES.STUDENT.JOBS}/:id`}
+              element={<JobDetails />}
+            />
+            <Route
+              path={ROUTES.STUDENT.APPLICATIONS}
+              element={<Applications />}
+            />
+          </Route>
+        </Route>
 
         {/* Admin Routes */}
-<Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-  <Route element={<AdminLayout />}>
-    <Route
-      path={ROUTES.ADMIN.DASHBOARD}
-      element={<AdminDashboard />}
-    />
+        <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+          <Route element={<AdminLayout />}>
+            <Route path={ROUTES.ADMIN.DASHBOARD} element={<AdminDashboard />} />
 
-    <Route
-      path={ROUTES.ADMIN.JOBS}
-      element={<AdminJobs />}
-    />
+            <Route path={ROUTES.ADMIN.JOBS} element={<AdminJobs />} />
 
-    <Route
-      path={ROUTES.ADMIN.CREATE_JOB}
-      element={<CreateJob />}
-    />
+            <Route path={ROUTES.ADMIN.CREATE_JOB} element={<CreateJob />} />
 
-    <Route
-      path={ROUTES.ADMIN.EDIT_JOB}
-      element={<EditJob />}
-    />
+            <Route path={ROUTES.ADMIN.EDIT_JOB} element={<EditJob />} />
 
-    <Route
-      path={ROUTES.ADMIN.STUDENTS}
-      element={<Students />}
-    />
+            <Route path={ROUTES.ADMIN.STUDENTS} element={<Students />} />
 
-    <Route
-      path={ROUTES.ADMIN.APPLICATIONS}
-      element={<AdminApplications />}
-    />
-  </Route>
-</Route>
+            <Route
+              path={ROUTES.ADMIN.APPLICATIONS}
+              element={<AdminApplications />}
+            />
+          </Route>
+        </Route>
 
         {/* Default */}
-        <Route
-          path="/"
-          element={<Navigate to={ROUTES.LOGIN} replace />}
-        />
+        <Route path="/" element={<Navigate to={ROUTES.LOGIN} replace />} />
 
         {/* 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />

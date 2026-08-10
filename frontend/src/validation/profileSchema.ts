@@ -11,7 +11,10 @@ export const profileSchema = Yup.object({
     .required("CGPA is required"),
 
   phone: Yup.string()
-    .matches(/^[0-9]{10}$/, "Enter a valid 10-digit phone number")
+    .matches(
+      /^[6-9][0-9]{9}$/,
+      "Enter a valid 10-digit Indian mobile number"
+    )
     .required("Phone number is required"),
 
   experience: Yup.string().max(

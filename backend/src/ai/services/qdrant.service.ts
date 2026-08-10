@@ -22,7 +22,7 @@ class QdrantService {
     const collections = await this.client.getCollections();
 
     const exists = collections.collections.some(
-      (collection) => collection.name === AI_COLLECTIONS.JOBS
+      (collection) => collection.name === AI_COLLECTIONS.JOBS,
     );
 
     if (exists) {
@@ -59,10 +59,7 @@ class QdrantService {
     });
   }
 
-  async searchJobs(
-    vector: number[],
-    limit = 5
-  ): Promise<SearchResult[]> {
+  async searchJobs(vector: number[], limit = 5): Promise<SearchResult[]> {
     const results = await this.client.search(AI_COLLECTIONS.JOBS, {
       vector,
       limit,
@@ -77,18 +74,18 @@ class QdrantService {
   }
 
   async recreateCollection() {
-  const collections = await this.client.getCollections();
+    const collections = await this.client.getCollections();
 
-  const exists = collections.collections.some(
-    (collection) => collection.name === AI_COLLECTIONS.JOBS
-  );
+    const exists = collections.collections.some(
+      (collection) => collection.name === AI_COLLECTIONS.JOBS,
+    );
 
-  if (exists) {
-    await this.client.deleteCollection(AI_COLLECTIONS.JOBS);
+    if (exists) {
+      await this.client.deleteCollection(AI_COLLECTIONS.JOBS);
+    }
+
+    await this.createCollection();
   }
-
-  await this.createCollection();
-}
 }
 
 export default new QdrantService();

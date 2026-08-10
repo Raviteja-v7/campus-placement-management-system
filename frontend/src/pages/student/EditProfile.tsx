@@ -56,53 +56,56 @@ const EditProfile = () => {
     fetchProfile();
   }, []);
 
-  const handleSubmit = async (values: CreateProfileRequest) => {
-    try {
-      // Determine whether profile fields changed
-      const profileChanged =
-        !profile ||
-        JSON.stringify(values) !==
-          JSON.stringify({
-            department: profile.department,
-            cgpa: profile.cgpa,
-            phone: profile.phone,
-            experience: profile.experience,
-            skills: profile.skills,
-          });
+ const handleSubmit = async (values: CreateProfileRequest) => {
+  try {
+    const profileChanged =
+      !profile ||
+      JSON.stringify(values) !==
+        JSON.stringify({
+          department: profile.department,
+          cgpa: profile.cgpa,
+          phone: profile.phone,
+          experience: profile.experience,
+          skills: profile.skills,
+        });
 
-      if (!profileChanged && !avatar && !resume) {
-        toast.info("No changes detected.");
-        return;
-      }
-
-      if (profileChanged) {
-        if (profile) {
-          await updateProfile(values);
-        } else {
-          await createProfile(values);
-        }
-      }
-
-      if (avatar) {
-        await uploadProfileImage(avatar);
-      }
-
-      if (resume) {
-        await uploadResume(resume);
-      }
-
-      toast.success(
-        profile
-          ? "Profile updated successfully"
-          : "Profile created successfully",
-      );
-
-      navigate("/student/profile");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to save profile");
+    if (!profileChanged && !avatar && !resume) {
+      toast.info("No changes detected.");
+      return;
     }
-  };
+
+    if (profileChanged) {
+      if (profile) {
+        await updateProfile(values);
+      } else {
+        await createProfile(values);
+      }
+    }
+
+    if (avatar) {
+      await uploadProfileImage(avatar);
+    }
+
+    if (resume) {
+      await uploadResume(resume);
+    }
+
+    toast.success(
+      profile
+        ? "Profile updated successfully"
+        : "Profile created successfully"
+    );
+
+    navigate("/student/profile");
+  } catch (error: any) {
+    console.error("Profile save error:", error);
+
+    toast.error(
+      error.response?.data?.message ??
+        "Failed to save profile"
+    );
+  }
+};
 
   if (loading) {
     return (

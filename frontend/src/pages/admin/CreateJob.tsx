@@ -8,13 +8,23 @@ import JobForm, {
 import { createJob } from "../../api/jobApi";
 import { ROUTES } from "../../constants/routes";
 
+const getToday = () => {
+  const today = new Date();
+
+  return `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(
+    today.getDate()
+  ).padStart(2, "0")}`;
+};
+
 const initialValues: JobFormValues = {
   title: "",
   company: "",
   location: "",
   salary: "",
   minimumCGPA: "",
-  deadline: new Date().toISOString().split("T")[0],
+  deadline: getToday(),
   description: "",
   requirements: "",
   skillsRequired: "",
@@ -34,7 +44,11 @@ const CreateJob = () => {
         location: values.location,
         salary: Number(values.salary),
         minimumCGPA: Number(values.minimumCGPA),
+
+        // Keep deadline as a date-only string.
+        // Do NOT convert it using new Date().
         deadline: values.deadline,
+
         description: values.description,
 
         requirements: values.requirements

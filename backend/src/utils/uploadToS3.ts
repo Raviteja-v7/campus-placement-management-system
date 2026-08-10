@@ -35,7 +35,7 @@ export const getSignedS3Url = async (key: string) => {
   });
 
   return getSignedUrl(s3, command, {
-    expiresIn: 60 * 60, // 1 hour
+    expiresIn: 60 * 60, 
   });
 };
 

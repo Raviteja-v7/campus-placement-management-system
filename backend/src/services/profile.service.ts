@@ -130,74 +130,84 @@ export const getDashboardStats = async () => {
 };
 
 export const getStudentDashboard = async (userId: string) => {
-    const profile = await StudentProfile.findOne({ userId });
+  const profile = await StudentProfile.findOne({ userId });
 
-    if (!profile) {
-        throw new ApiError(404, "Profile not found");
-    }
+  let profileCompletion = 0;
 
+  if (profile) {
     const profileCompletionFields = [
-        profile.department,
-        profile.cgpa,
-        profile.phone,
-        profile.skills?.length,
-        profile.experience,
-        profile.avatarUrl,
-        profile.resumeUrl,
+      profile.department,
+      profile.cgpa,
+      profile.phone,
+      profile.skills?.length,
+      profile.experience,
+      profile.avatarUrl,
+      profile.resumeUrl,
     ];
 
     const completedFields =
-        profileCompletionFields.filter(Boolean).length;
+      profileCompletionFields.filter(Boolean).length;
 
-    const profileCompletion = Math.round(
-        (completedFields / profileCompletionFields.length) * 100
+    profileCompletion = Math.round(
+      (completedFields / profileCompletionFields.length) * 100
     );
+  }
 
-    const [appliedJobs, interviews, openJobs] =
-        await Promise.all([
-            Application.countDocuments({
-                student: userId,
-            }),
+  // Get today's date as YYYY-MM-DD.
+  // Job deadlines are stored as date-only strings.
+  const today = new Date();
 
-            Application.countDocuments({
-                student: userId,
-                status: "interview",
-            }),
+  const todayString = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(
+    today.getDate()
+  ).padStart(2, "0")}`;
 
-            Job.countDocuments({
-                deadline: {
-                    $gte: new Date(),
-                },
-            }),
-        ]);
+  const [appliedJobs, interviews, openJobs] =
+    await Promise.all([
+      Application.countDocuments({
+        student: userId,
+      }),
 
-    const recentApplications =
-        await Application.find({
-            student: userId,
-        })
-            .populate("job")
-            .sort({
-                createdAt: -1,
-            })
-            .limit(5);
+      Application.countDocuments({
+        student: userId,
+        status: "interview",
+      }),
 
-    const latestJobs =
-        await Job.find({
-            deadline: {
-                $gte: new Date(),
-            },
-        })
-            .sort({
-                createdAt: -1,
-            })
-            .limit(5);
+      Job.countDocuments({
+        deadline: {
+          $gte: todayString,
+        },
+      }),
+    ]);
 
-    return {
-        profileCompletion,
-        appliedJobs,
-        interviews,
-        openJobs,
-        recentApplications,
-        latestJobs,
-    };
+  const recentApplications =
+    await Application.find({
+      student: userId,
+    })
+      .populate("job")
+      .sort({
+        createdAt: -1,
+      })
+      .limit(5);
+
+  const latestJobs =
+    await Job.find({
+      deadline: {
+        $gte: todayString,
+      },
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .limit(5);
+
+  return {
+    profileCompletion,
+    appliedJobs,
+    interviews,
+    openJobs,
+    recentApplications,
+    latestJobs,
+  };
 };

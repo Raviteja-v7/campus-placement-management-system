@@ -49,9 +49,9 @@ const jobSchema = new mongoose.Schema(
       max: 10,
     },
     deadline: {
-      type: Date,
-      required: true,
-    },
+  type: String,
+  required: true,
+},
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

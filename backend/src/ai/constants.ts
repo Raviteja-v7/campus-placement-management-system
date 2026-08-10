@@ -9,7 +9,7 @@ export const EMBEDDING = {
 
 export const AI_RECOMMENDATIONS = {
   LIMIT: 10,
-  MIN_SCORE: 0.7,
+  MIN_SCORE: 0.5,
 } as const;
 
 export const JOB_NAMESPACE =
