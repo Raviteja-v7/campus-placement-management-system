@@ -1,18 +1,32 @@
 import type { InputHTMLAttributes } from "react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
 }
 
-const Input = ({ label, error, ...props }: InputProps) => {
+const Input = ({
+  label,
+  error,
+  id,
+  name,
+  ...props
+}: InputProps) => {
+  const inputId = id ?? name;
+
   return (
     <div className="mb-4">
-      <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+      <label
+        htmlFor={inputId}
+        className="mb-1.5 block text-sm font-semibold text-gray-700"
+      >
         {label}
       </label>
 
       <input
+        id={inputId}
+        name={name}
         className={`w-full rounded-lg border px-4 py-2.5 text-gray-900 outline-none transition
         ${
           error
@@ -23,7 +37,9 @@ const Input = ({ label, error, ...props }: InputProps) => {
       />
 
       {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
+        <p className="mt-1 text-sm text-red-600">
+          {error}
+        </p>
       )}
     </div>
   );
